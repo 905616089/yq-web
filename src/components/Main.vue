@@ -4,7 +4,7 @@
       <div class="container-left" ref="leftContainer">
         <header class="header-container">
           <img src="../assets/headImg.jpg" class="headerImg">
-          <span class="headerFont">外星-pa</span>
+          <span class="headerFont">YANGQIAN</span>
         </header>
         <nav>
           <el-row class="tac">
@@ -13,21 +13,20 @@
                 class="el-menu-vertical-demo"
                 @open="handleOpen"
                 @close="handleClose">
-                
-                <el-menu-item v-for="item in menuEnum" :key="item.key" :index="item.key">
-                  <span slot="title" class="title" @click="clickEnum(item.url)">{{ item.name }}</span>
-                </el-menu-item>
+                <div v-for="item in menuEnum" :key="item.key">
+                  <el-submenu :index="item.key" v-if="item.children">
+                    <template slot="title"  ><span @click="clickEnum(item.url)" class="title">{{ item.name }}</span></template>
+                    <el-menu-item-group v-if="item.children">
+                      <el-menu-item :index="items.key" v-for="items in item.children" :key="items.key" @click="clickEnum(items.url)" class="title">{{ items.name }}</el-menu-item>
+                    </el-menu-item-group>
+                  </el-submenu>
+                  <el-menu-item :index="item.key" v-else>
+                    <template slot="title"><span @click="clickEnum(item.url)"  class="title" >{{ item.name }}</span></template>
+                  </el-menu-item>
+                </div>
             </el-menu>
           </el-row>
         </nav>
-        <footer class="footer-content">
-            <ul class="footer-ul">
-              <li class="footer-li">联系我</li>
-              <li class="footer-li">邮箱：1137851024@qq.com</li>
-              <li class="footer-li">微信：wxid_lysnaula4ynr21</li>
-              <li class="footer-li">电话：13503591637</li>
-            </ul>
-          </footer>
       </div>
       <div class="container-right">
         <router-view></router-view>
@@ -44,9 +43,13 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       height: '',
       menuEnum: [
-        {name: 'Books', url: '/main/Books', key: '1'},
+        {name: 'Books', url: '/main/Books', key: '1', children: [
+          {name: '书本一', url: '/main/Books', key:'1-1'}
+        ]},
         {name: 'Illustration', url: '/main/Illustration', key: '2'},
         {name: 'Personal Work', url: '/main/Personal', key: '3'},
+        {name: 'About', url: '/main/About', key: '4'},
+
       ]
     }
   },
@@ -68,6 +71,9 @@ export default {
       console.log(key, keyPath);
     },
     clickEnum(url) {
+      if(this.$route.path === url) {
+        return false;
+      }
       this.$router.push({
         path: url
       })
@@ -103,12 +109,12 @@ main{
   margin-top: 20px;
 }
 .headerImg{
-  width: 150px;
+  width: 125px;
   max-width:205px;
   margin-bottom: 10px;
 }
 .headerFont{
-  font-size: 14px;
+  font-size: 20px;
   font-weight: 600;
 }
 nav .title {
@@ -125,12 +131,22 @@ nav .title {
 >>>.el-menu-item.is-active{
   color: #fa8647 !important;
 }
+>>>.el-submenu__title:hover{
+  background-color:  white;
+  color: #409EFF;
+}
+>>>.el-menu-item-group__title{
+  padding: 0px !important;
+}
 >>>.el-menu-item:focus, .el-menu-item:hover {
   background-color:  white;
   color: #409EFF;
 }
 >>>.el-menu{
   border: none;
+}
+>>>.el-submenu__title > .el-icon-arrow-down {
+  display: none;
 }
 .footer-content{
   position: absolute;

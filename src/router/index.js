@@ -4,6 +4,7 @@ import Main from '../components/Main.vue'
 import Books from '../pages/book/books.vue'
 import Personal from '../pages/Personal/personal.vue'
 import Illustration from '../pages/Illustration/illustration.vue'
+import About from '../pages/about/about.vue'
 
 Vue.use(Router)
 
@@ -38,6 +39,11 @@ export default new Router({
           path: '/main/Illustration',
           name: 'Illustration',
           component: Illustration,
+        },
+        {
+          path: '/main/About',
+          name: 'About',
+          component: About,
         }
       ]
     }
