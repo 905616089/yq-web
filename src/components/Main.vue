@@ -9,18 +9,13 @@
         <nav>
           <el-row class="tac">
             <el-menu
-                default-active="2"
+                default-active="1"
                 class="el-menu-vertical-demo"
                 @open="handleOpen"
                 @close="handleClose">
-                <el-menu-item index="1">
-                  <span slot="title" class="title">Books</span>
-                </el-menu-item>
-                <el-menu-item index="2">
-                  <span slot="title" class="title">Illustration</span>
-                </el-menu-item>
-                <el-menu-item index="3">
-                  <span slot="title" class="title">Personal Work</span>
+                
+                <el-menu-item v-for="item in menuEnum" :key="item.key" :index="item.key">
+                  <span slot="title" class="title" @click="clickEnum(item.url)">{{ item.name }}</span>
                 </el-menu-item>
             </el-menu>
           </el-row>
@@ -34,7 +29,9 @@
             </ul>
           </footer>
       </div>
-      <div class="container-right"></div>
+      <div class="container-right">
+        <router-view></router-view>
+      </div>
     </main>
   </div>
 </template>
@@ -46,6 +43,11 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       height: '',
+      menuEnum: [
+        {name: 'Books', url: '/main/Books', key: '1'},
+        {name: 'Illustration', url: '/main/Illustration', key: '2'},
+        {name: 'Personal Work', url: '/main/Personal', key: '3'},
+      ]
     }
   },
   mounted() {
@@ -64,6 +66,11 @@ export default {
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
+    },
+    clickEnum(url) {
+      this.$router.push({
+        path: url
+      })
     }
   }
 }
@@ -79,14 +86,12 @@ export default {
 }
 .container-left{
   float: left;
-  width: 25%;
+  width: 268px;
   position: relative;
 }
 .container-right{
   float: left;
-  width: 75%;
-  background: red;
-  opacity: .5;
+  width: calc(100% - 268px);
 }
 .header-container{
   display: flex;
@@ -118,7 +123,7 @@ nav .title {
   text-align: left;
 }
 >>>.el-menu-item.is-active{
-  color: #fa8647;
+  color: #fa8647 !important;
 }
 >>>.el-menu-item:focus, .el-menu-item:hover {
   background-color:  white;
